@@ -1,0 +1,23 @@
+{
+  "name": "CAPS",
+  "version": "1.0.0",
+  "description": "Author: Chris Hamersly  Version: 1.0.0",
+  "main": "vendor.js",
+  "scripts": {
+    "test":  "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrishamersly-401-advanced-javascript/CAPS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrishamersly-401-advanced-javascript/CAPS/issues"
+  },
+  "homepage": "https://github.com/chrishamersly-401-advanced-javascript/CAPS#readme",
+  "dependencies": {
+    "jest": "^26.4.2"
+  }
+}
