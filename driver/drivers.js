@@ -1,48 +1,108 @@
 'use strict';
 
 const io= require('socket.io-client');
+const faker = require('faker');
+const { address } = require('faker');
 
-const driverSocket = io.connect('http://localhost:3000/caps');
+const driverSocket = io.connect('http://localhost:3001/caps');
 
 driverSocket.emit('join', 'driverFile');
 
-driverSocket.emit('pickup', pickupHandler, (payload) => {
-  console.log('pickup event');
-});
+const randomOrderId = faker.random.number();
+const randomOrderName = faker.name.findName(); 
+const randomAddress = faker.address.streetAddress(); 
+const time = faker.date.recent();
+const storeName = process.env.STORE_NAME;
+// const time = new Date ();
 
-driverSocket.emit('in-transit', inTransitHandler, (payload) => {
-  console.log('pickup event');
-});
+// driverSocket.on('pickup', (payload) => {
 
-driverSocket.emit('delivered', deliveredHandler, (payload) => {
-  console.log('pickup event');
-});
+// })
 
+// driverSocket.emit('in-transit', inTransitHandler, (payload) => {
+//   console.log('pickup event');
+// });
 
+// driverSocket.emit('delivered', deliveredHandler, (payload) => {
+//   console.log('pickup event');
+// });
+driverSocket.on('pickup', (payload => {
+  setTimeout(() => {
+  //listening for teh pickup event and getting the payload and then emitting 
 
-
-function pickupHandler(payload) {
-  const time = new Date();
-  console.log('EVENT', {event:'pickup', time, payload});
-}
-  
-  
-function inTransitHandler(order) {
-  setTimeout('pickup', () => {
-    console.log(`DRIVER: picked up ${order.orderID}`);
-    driverSocket.emit(`in-transit', ${order.orderID}`);
+    console.log('DRIVER: picked up', payload);
+    driverSocket.emit('in-transit', payload);
   
   }, 1000);
-}
+}),
+);
+
+driverSocket.on('in-transit', (payload => {
+  setTimeout(() => {
+  //listening for teh pickup event and getting the payload and then emitting 
+
+    console.log('DRIVER: delivered', payload);
+    driverSocket.emit('delivered', payload);
   
-function deliveredHandler(order) {
-  setTimeout('pickup', () => {
-    console.log(`DRIVER: delivered ${order.orderID}`);
-    driverSocket.emit(`delivered',${order.orderID}`);
+  }, 1000);
+}),
+);
+
+
+setInterval(()=>{
+
+  const order ={
+    event: 'pickup',
+    time: new Date(),
+    storename: storeName,
+    orderID: randomOrderId, 
+    customerName: randomOrderName,
+    address: randomAddress, 
+  };
+
+  console.log('order is ready', order.orderID, time);
+  console.log('Please deliver to', randomAddress);
+  driverSocket.emit('in-transit', order);
+}, 5000);
+
+setInterval(()=>{
+
+  const order ={
+    event: 'in-transit',
+    time: new Date(),
+    storename: storeName,
+    orderID: randomOrderId, 
+    customerName: randomOrderName,
+    address: randomAddress, 
+  };
+
+  console.log('Thank you for delivering', order.orderID);
+  // console.log('Please deliver to', randomAddress);
+  driverSocket.emit('delivered', order);
+}, 5000);
+
+// function pickupHandler(payload) {
+//   const time = new Date();
+//   console.log('EVENT', {event:'pickup', time, payload});
+// }
   
-  }, 3000);
+  
+// function inTransitHandler(order) {
+//   setTimeout('pickup', () => {
+//     console.log(`DRIVER: picked up ${order.orderID}`);
+//     driverSocket.emit(`in-transit', ${order.orderID}`);
+  
+//   }, 1000);
+// }
+  
+// function deliveredHandler(order) {
+//   setTimeout('pickup', () => {
+//     console.log(`DRIVER: delivered ${order.orderID}`);
+//     driverSocket.emit(`delivered',${order.orderID}`);
+  
+//   }, 3000);
    
-}
+// }
 // pickupHandler();
 
 

@@ -1,25 +1,7 @@
 'use strict';
 //day three lab
 
-const io = require('socket.io')(3000);
-// const socket = io.connect('http://localhost:3000');
-
-io.on('connection', (socket) => {
-  console.log('CONNECTED', socket.id);
-
-  socket.on('pickup', (payload) => {
-    io.emit('pickup', payload);
-  });
-  
-  socket.on('in-transit', (payload) => {
-    io.emit('in-transit', payload);
-  });
-
-  socket.on('delivered', (payload) => {
-    io.emit('delivered', payload);
-  });
-});
-
+const io = require('socket.io')(3001);
 const caps = io.of('/caps');
 
 caps.on('connection', (socket) => {
@@ -34,17 +16,23 @@ caps.on('connection', (socket) => {
 
   socket.on('pickup', (payload) => {
     caps.to('vendorFile').emit('pickup', payload);
-    console.log('payload', payload);
+    console.log('PICKUP', payload);
   });
 
-  socket.on('in-transit', (payload) => {
-    caps.to('driverFile').emit('in-transit', payload);
+  socket.on('pickup', (payload) => {
+    caps.to(process.env.STORE_NAME).emit('in-transit', payload);
+    console.log('IN-TRANSIT', payload);
+  });
+
+  socket.on('pickup', (payload) => {
+    caps.to(process.env.STORE_NAME).emit('delivered', payload);
+    console.log('DELIVERED', payload);
   });
 
   socket.emit('delivery', 'delivery is made');
 });
 
-caps.emit('pickup', );
+// caps.emit('pickup', );
 
 
 

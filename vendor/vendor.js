@@ -3,28 +3,51 @@
 const io= require('socket.io-client');
 const faker = require('faker');
 require('dotenv').config();
-const vendorSocket = io.connect('http://localhost:3000/caps');
-vendorSocket.emit('join', 'vendorFile');
+const vendorSocket = io.connect('http://localhost:3001/caps');
+vendorSocket.emit('join', process.env.STORE_NAME);
 
 const randomOrderId = faker.random.number();
 const randomOrderName = faker.name.findName(); 
 const randomAddress = faker.address.streetAddress(); 
-let storeName = process.env.STORE_NAME;
+const time = faker.date.recent();
+const storeName = process.env.STORE_NAME;
 
-// vendorSocket.broadcast.emit('pickup', (payload) => {
-//   setInterval(function(){
-//     socket.emit('New Order', {
-//       event: 'pickup',
-//       time: new Date(),
-//       payload: {
-//         storename: storeName,
-//         orderID: randomOrderId, 
-//         customerName: randomOrderName,
-//         address: randomAddress, 
-//       }
-//     });
-//   }, 5000)
-// });
+
+setInterval(()=>{
+
+    const order ={
+      event: 'pickup',
+      time: new Date(),
+        storename: storeName,
+        orderID: randomOrderId, 
+        customerName: randomOrderName,
+        address: randomAddress, 
+      }
+
+console.log('driver picked up', order.orderID, time)
+  vendorSocket.emit('pickup', order);
+}, 5000);
+
+setInterval(()=>{
+
+  const order ={
+    event: 'pickup',
+    time: new Date(),
+      storename: storeName,
+      orderID: randomOrderId, 
+      customerName: randomOrderName,
+      address: randomAddress, 
+    }
+
+console.log('driver delivered', order.orderID, time)
+vendorSocket.emit('delivered', order);
+}, 5000);
+
+
+
+
+
+
 
 
 
