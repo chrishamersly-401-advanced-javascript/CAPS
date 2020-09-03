@@ -33,6 +33,13 @@ The application will be created with the following overall architecture and meth
     1. As a driver, I want to alert the system when I have picked up a package and it is in transit
     1. As a driver, I want to alert the system when a package has been delivered
     1. As a vendor, I want to be notified when my package has been delivered
+
+  - Tuesday
+    1. As a vendor, I want to alert the system when I have a package to be picked up
+    1. As a driver, I want to be notified when there is a package to be delivered
+    1. As a driver, I want to alert the system when I have picked up a package and it is in transit
+    1. As a driver, I want to alert the system when a package has been delivered
+    1. As a vendor, I want to be notified when my package has been delivered
   
 
 
