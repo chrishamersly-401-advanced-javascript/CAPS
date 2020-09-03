@@ -2,7 +2,7 @@
   "name": "caps",
   "version": "1.0.0",
   "description": "Author: Chris Hamersly  Version: 1.0.0",
-  "main": "caps.js",
+  "main": "drivers.js",
   "scripts": {
     "test": "jest --coverage"
   },
@@ -19,13 +19,14 @@
   "homepage": "https://github.com/chrishamersly-401-advanced-javascript/CAPS#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "driver": "^1.0.0",
     "events": "^3.2.0",
     "faker": "^5.1.0",
     "inquire": "^0.4.8",
     "inquirer": "^7.0.3",
     "jest": "^26.4.2",
     "socket.io": "^2.3.0",
-    "socketio": "^1.0.0",
+    "socket.io-client": "^2.3.0",
     "uuid": "^3.2.1"
   }
 }

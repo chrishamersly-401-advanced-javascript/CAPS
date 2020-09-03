@@ -1,6 +1,6 @@
 jest.useFakeTimers();
-const emitter = require('../apps/events');
-require('../apps/caps');
+const emitter = require('../apps/lib/events');
+require('../caps/caps');
 
 const delivery = {
   store: '1-206-flowers',
