@@ -2,6 +2,8 @@
 const client = require('socket.io-client');
 const faker = require('faker');
 require('dotenv').config();
+
+
 const randomOrderId = faker.random.number();
 const randomOrderName = faker.name.findName(); 
 const randomAddress = faker.address.streetAddress(); 
@@ -12,19 +14,29 @@ const socket = client.connect('http://localhost:3001/caps');
 
 socket.emit('join', storeName);
 
+socket.on('in-transit', (payload) => {
+  console.log('HELLO');
+} );
+
 socket.on('delivered', (payload) => {
   console.log(`Thank you for delivering ${payload.orderID}`);
 })
 
 setInterval(() => {
 
-  let delivery = {
+  const delivery = {
     store : storeName, 
     orderID : randomOrderId,
     customer: randomOrderName,
     address: randomAddress
   }
   socket.emit('pickup', delivery);
+}, 5000)
+
+setInterval(() => {
+
+  
+ console.log('Delivery Made', randomOrderId);
 }, 5000)
 
 
